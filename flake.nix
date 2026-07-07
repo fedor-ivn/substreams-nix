@@ -17,5 +17,12 @@
           substreams = pkgs.callPackage ./package.nix { };
         };
       }
-    );
+    ) // {
+      templates = {
+        default = {
+          path = ./templates/default;
+          description = "Substreams development environment with Rust, protobuf, and PostgreSQL";
+        };
+      };
+    };
 }
