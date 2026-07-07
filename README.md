@@ -9,7 +9,7 @@ Nix package for the [Substreams CLI](https://substreams.dev).
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    substreams.url = "github:fedorivn/substreams-nix";
+    substreams.url = "github:fedor-ivn/substreams-nix";
   };
 
   outputs = { nixpkgs, substreams, ... }: {
@@ -30,7 +30,7 @@ substreams --version
 For a complete Substreams development environment with Rust, protobuf, and tooling:
 
 ```bash
-nix flake init -t github:fedorivn/substreams-nix#default
+nix flake init -t github:fedor-ivn/substreams-nix#default
 nix develop
 ```
 

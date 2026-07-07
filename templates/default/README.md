@@ -5,7 +5,7 @@ Complete development environment for Substreams with Rust, Protocol Buffers, and
 ## Quick Start
 
 ```bash
-nix flake init -t github:fedorivn/substreams-nix#default
+nix flake init -t github:fedor-ivn/substreams-nix#default
 nix develop
 substreams init
 ```
@@ -44,5 +44,5 @@ rustToolchain = pkgs.rust-bin.stable."1.75.0".default.override {
 After initializing, update `flake.nix` to use the published template:
 
 ```nix
-inputs.substreams-nix.url = "github:fedorivn/substreams-nix";
+inputs.substreams-nix.url = "github:fedor-ivn/substreams-nix";
 ```
