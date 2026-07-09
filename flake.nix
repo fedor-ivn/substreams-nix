@@ -15,6 +15,8 @@
         packages = {
           default = pkgs.callPackage ./package.nix { };
           substreams = pkgs.callPackage ./package.nix { };
+          substreams-sink-sql = pkgs.callPackage ./package-sink-sql.nix { };
+          substreams-sink-files = pkgs.callPackage ./package-sink-files.nix { };
         };
       }
     ) // {
