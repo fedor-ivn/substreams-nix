@@ -15,26 +15,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v4
+        uses: DeterminateSystems/nix-installer-action@v22
 
       - name: Update with nix-update
         id: update
         run: |
-          nix run github:Mic92/nix-update -- \
-            --flake substreams \
-            --format \
-            --commit
+          for package in substreams substreams-sink-sql substreams-sink-files; do
+            nix run github:Mic92/nix-update -- \
+              --flake "$package" \
+              --format \
+              --commit
+          done
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
-          commit-message: 'chore: update substreams'
-          title: 'chore: update substreams'
+          # Use a PAT/App token (not the default GITHUB_TOKEN) so that opening
+          # the PR triggers CI. See:
+          # https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md
+          token: ${{ secrets.GH_PAT }}
+          commit-message: 'chore: update substreams packages'
+          title: 'chore: update substreams packages'
           body: |
-            Auto-generated update for Substreams CLI.
+            Auto-generated update for Substreams packages
+            (substreams, substreams-sink-sql, substreams-sink-files).
 
             Updated by [nix-update](https://github.com/Mic92/nix-update).
           branch: auto-update/substreams

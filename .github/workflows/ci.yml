@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   check:
@@ -11,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v4
+        uses: DeterminateSystems/nix-installer-action@v22
 
       - name: Check flake
         run: nix flake check
@@ -22,23 +23,24 @@ jobs:
   build:
     name: Build and test
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
+        package:
+          - substreams
+          - substreams-sink-sql
+          - substreams-sink-files
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v4
+        uses: DeterminateSystems/nix-installer-action@v22
 
       - name: Build package
-        run: nix build .#substreams --print-build-logs
+        run: nix build .#${{ matrix.package }} --print-build-logs
 
       - name: Test version
         run: |
-          ./result/bin/substreams --version
-
-      - name: Test help
-        run: |
-          ./result/bin/substreams --help
+          ./result/bin/${{ matrix.package }} --version
