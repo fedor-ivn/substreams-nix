@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "substreams";
-  version = "1.24.0";
+  version = "1.26.0";
 
   src = finalAttrs.passthru.sources.${stdenv.hostPlatform.system}
     or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
@@ -29,19 +29,19 @@ stdenv.mkDerivation (finalAttrs: {
     sources = {
       "x86_64-linux" = fetchurl {
         url = "https://github.com/streamingfast/substreams/releases/download/v${finalAttrs.version}/substreams_linux_x86_64.tar.gz";
-        hash = "sha256-jtWKeFwAZX+3HHvDkLeBNXzRPkFUl+S08Bap4xXXUaY=";
+        hash = "sha256-vKa3hsb50DH9BHZI/3KF+CH/uFny0zWgq2rg410v+UI=";
       };
       "aarch64-linux" = fetchurl {
         url = "https://github.com/streamingfast/substreams/releases/download/v${finalAttrs.version}/substreams_linux_arm64.tar.gz";
-        hash = "sha256-ortV3XUoMBd/C8Tiekq3HqKkQ+9KEcGvhdtnGvl1kks=";
+        hash = "sha256-TMW0cDVMRcQKpVH8/oYG5TtyKbN8zXeKvnmJAyeJQFc=";
       };
       "x86_64-darwin" = fetchurl {
         url = "https://github.com/streamingfast/substreams/releases/download/v${finalAttrs.version}/substreams_darwin_x86_64.tar.gz";
-        hash = "sha256-a05PjOBH0iKgBTOUdCRVWg/4fhLx5U95//B8fdJgbC0=";
+        hash = "sha256-G3c3OnLPbzytUwe7ANjG5nrfYq3beYqPPegoI/UiU4s=";
       };
       "aarch64-darwin" = fetchurl {
         url = "https://github.com/streamingfast/substreams/releases/download/v${finalAttrs.version}/substreams_darwin_arm64.tar.gz";
-        hash = "sha256-RtJa8Itp+SwVMRlyqf8bXfSxsPle/NXYbDPpUctTvTM=";
+        hash = "sha256-wev2XD4gCtUJgG1Fj4u2VOX+A7x5kcSdUitSFP/uCAY=";
       };
     };
 
