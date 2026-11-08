@@ -46,6 +46,6 @@ jobs:
 
             Each package's `passthru.updateScript` resolves the latest upstream
             release and refreshes the hash for every supported platform.
-          branch: auto-update/substreams
+          branch: auto-update
           delete-branch: true
           labels: dependencies
