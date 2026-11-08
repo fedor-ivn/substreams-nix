@@ -20,15 +20,21 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v22
 
-      - name: Update with nix-update
-        id: update
+      - name: Run update scripts
+        env:
+          # Avoids the 60 req/hr unauthenticated GitHub API rate limit, which
+          # shared Actions runner IPs exhaust quickly.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          for package in substreams substreams-sink-sql substreams-sink-files; do
-            nix run github:Mic92/nix-update -- \
-              --flake "$package" \
-              --format \
-              --commit
+          for package in substreams substreams-sink-files; do
+            echo "::group::$package"
+            script=$(nix build --no-link --print-out-paths ".#$package.passthru.updateScript")
+            "$script"
+            echo "::endgroup::"
           done
+
+      - name: Show changes
+        run: git diff --stat
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
@@ -41,9 +47,10 @@ jobs:
           title: 'chore: update substreams packages'
           body: |
             Auto-generated update for Substreams packages
-            (substreams, substreams-sink-sql, substreams-sink-files).
+            (substreams, substreams-sink-files).
 
-            Updated by [nix-update](https://github.com/Mic92/nix-update).
+            Each package's `passthru.updateScript` resolves the latest upstream
+            release and refreshes the hash for every supported platform.
           branch: auto-update/substreams
           delete-branch: true
           labels: dependencies

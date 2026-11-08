@@ -42,13 +42,9 @@
             pkgs.protobuf
             pkgs.protoc-gen-prost
             pkgs.buf
-
-            pkgs.toml-cli
-            pkgs.nodejs_22
             pkgs.postgresql
 
             substreams-nix.packages.${system}.default
-            substreams-nix.packages.${system}.substreams-sink-sql
             substreams-nix.packages.${system}.substreams-sink-files
 
             pkgs.jq

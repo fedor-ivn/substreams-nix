@@ -28,7 +28,6 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         package:
           - substreams
-          - substreams-sink-sql
           - substreams-sink-files
     runs-on: ${{ matrix.os }}
     steps:

@@ -7,10 +7,9 @@ Nix packages for [Substreams](https://substreams.dev) and its official sinks.
 | Flake output              | Description                                              | Upstream                                                                  |
 | ------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------- |
 | `substreams` (`default`)  | Substreams CLI — stream processing engine for blockchain data | [streamingfast/substreams](https://github.com/streamingfast/substreams)           |
-| `substreams-sink-sql`     | Sync Substreams data into PostgreSQL / ClickHouse       | [streamingfast/substreams-sink-sql](https://github.com/streamingfast/substreams-sink-sql)     |
 | `substreams-sink-files`   | Sync Substreams data into flat files (CSV, JSONL, Parquet) | [streamingfast/substreams-sink-files](https://github.com/streamingfast/substreams-sink-files) |
 
-Build any of them with `nix build .#<output>`, e.g. `nix build .#substreams-sink-sql`.
+Build any of them with `nix build .#<output>`, e.g. `nix build .#substreams-sink-files`.
 
 ## Usage
 
@@ -26,7 +25,6 @@ Build any of them with `nix build .#<output>`, e.g. `nix build .#substreams-sink
     devShells.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.mkShell {
       buildInputs = [
         substreams.packages.x86_64-linux.substreams
-        substreams.packages.x86_64-linux.substreams-sink-sql
         substreams.packages.x86_64-linux.substreams-sink-files
       ];
     };
@@ -57,11 +55,27 @@ See [`templates/default/README.md`](templates/default/README.md) for details.
 
 ## Update Packages
 
-Packages are updated automatically by a daily GitHub Actions workflow. To update
-one manually:
+Packages are updated automatically by a daily GitHub Actions workflow.
+
+Each package exposes a `passthru.updateScript` that resolves the latest upstream
+release and refreshes the hash for **every** supported platform in one pass. The
+per-platform tarballs live in `passthru.sources` as fixed-output derivations
+built with the host stdenv, so a single machine can update them all without
+emulation or remote builders.
+
+To update one manually:
 
 ```bash
-nix run github:Mic92/nix-update -- --flake .#substreams --format
-nix run github:Mic92/nix-update -- --flake .#substreams-sink-sql --format
-nix run github:Mic92/nix-update -- --flake .#substreams-sink-files --format
+# writeShellScript produces a plain file, not a $out/bin/ tree, so `nix run`
+# cannot exec it directly - build it and run the resulting path.
+script=$(nix build --no-link --print-out-paths .#substreams.passthru.updateScript)
+"$script"
+
+script=$(nix build --no-link --print-out-paths .#substreams-sink-files.passthru.updateScript)
+"$script"
 ```
+
+Set `GITHUB_TOKEN` to stay clear of the unauthenticated API rate limit.
+
+`default.nix` is a compatibility shim for nixpkgs' `update-source-version`,
+which locates packages via `import ./.` rather than through flake outputs.
