@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "substreams-sink-files";
-  version = "2.2.0";
+  version = "2.3.1";
 
   src = finalAttrs.passthru.sources.${stdenv.hostPlatform.system}
     or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
@@ -29,19 +29,19 @@ stdenv.mkDerivation (finalAttrs: {
     sources = {
       "x86_64-linux" = fetchurl {
         url = "https://github.com/streamingfast/substreams-sink-files/releases/download/v${finalAttrs.version}/substreams-sink-files_linux_x86_64.tar.gz";
-        hash = "sha256-1xf7Hy6/5qm2tUbJUdf3HT1/ytj2/W8pNb8KmV+CcAg=";
+        hash = "sha256-vqFiYFSZvBwiUyWmtDp6BEwBGoloQBMaeeVJiMupnOc=";
       };
       "aarch64-linux" = fetchurl {
         url = "https://github.com/streamingfast/substreams-sink-files/releases/download/v${finalAttrs.version}/substreams-sink-files_linux_arm64.tar.gz";
-        hash = "sha256-ucL+ktTmVex0aaB6LSfnApqVpUrh1OYvEH/7FaZUdLU=";
+        hash = "sha256-Gj+ZLiEPVAvHMBAk6XfNwmjzkcnl9Ox9gpfhnL24uxg=";
       };
       "x86_64-darwin" = fetchurl {
         url = "https://github.com/streamingfast/substreams-sink-files/releases/download/v${finalAttrs.version}/substreams-sink-files_darwin_x86_64.tar.gz";
-        hash = "sha256-+2kq57sR3+poLW4DWKNbXUPdAy3nIcAKzynECYMxrcc=";
+        hash = "sha256-AmlzlpwVI5dp6yyZa3ch/CQ2xZVTeQ+s5tZ7Ysv4Z7k=";
       };
       "aarch64-darwin" = fetchurl {
         url = "https://github.com/streamingfast/substreams-sink-files/releases/download/v${finalAttrs.version}/substreams-sink-files_darwin_arm64.tar.gz";
-        hash = "sha256-KAppzFO9mR2g8+JdjyyN2FaynYvPdnx47tTu8Y25MnI=";
+        hash = "sha256-JTEXyfTzqdOLeI9o9ot20ksyB5QmFerH+FDaJd/rIY8=";
       };
     };
 
