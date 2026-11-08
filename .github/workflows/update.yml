@@ -22,8 +22,6 @@ jobs:
 
       - name: Run update scripts
         env:
-          # Avoids the 60 req/hr unauthenticated GitHub API rate limit, which
-          # shared Actions runner IPs exhaust quickly.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           for package in substreams substreams-sink-files; do
@@ -39,9 +37,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
-          # Use a PAT/App token (not the default GITHUB_TOKEN) so that opening
-          # the PR triggers CI. See:
-          # https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md
           token: ${{ secrets.GH_PAT }}
           commit-message: 'chore: update substreams packages'
           title: 'chore: update substreams packages'
